@@ -1,0 +1,18 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icons/Question" clip-path="url(#clip0_38_2600)">
+<g id="Union" opacity="0.8">
+<path d="M1.41176 0H22.5882V1.41176H2.82353V16.9412H7.05882V21.1765H8.47059V22.5882H7.05882V24H4.23529V18.3529H1.41176V16.9412H0V1.41176H1.41176V0Z" fill="black"/>
+<path d="M9.88235 19.7647V21.1765H8.47059V19.7647H9.88235Z" fill="black"/>
+<path d="M11.2941 18.3529V19.7647H9.88235V18.3529H11.2941Z" fill="black"/>
+<path d="M22.5882 16.9412V18.3529H11.2941V16.9412H22.5882Z" fill="black"/>
+<path d="M22.5882 16.9412H24V1.41176H22.5882V16.9412Z" fill="black"/>
+<path d="M14.1176 12.7059H11.2941V14.1176H14.1176V12.7059Z" fill="black"/>
+<path d="M11.2941 9.88235V11.2941H14.1176V9.88235H15.5294V5.64706H14.1176V4.23529H11.2941V5.64706H9.88235V8.47059H11.2941V7.05882H14.1176V9.88235H11.2941Z" fill="black"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_38_2600">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -15,7 +15,8 @@ const data = [
         act: "Buka",
         person: {
           name: "John",
-          nim: "1234567890",
+          nim_tpb: "1234567890",
+          nim_jurusan: "1234567890",
           angkatan: "2021",
         },
       },
@@ -25,7 +26,8 @@ const data = [
         act: "Tutup",
         person: {
           name: "Satpam",
-          nim: "0987654321",
+          nim_tpb: "0987654321",
+          nim_jurusan: "1234567890",
           angkatan: "2022",
         },
       },
@@ -35,7 +37,8 @@ const data = [
         act: "Buka",
         person: {
           name: "Doe",
-          nim: "1357924680",
+          nim_tpb: "1357924680",
+          nim_jurusan: "1234567890",
           angkatan: "2023",
         },
       },
@@ -45,7 +48,8 @@ const data = [
         act: "Tutup",
         person: {
           name: "Doe",
-          nim: "1357924680",
+          nim_tpb: "1357924680",
+          nim_jurusan: "1234567890",
           angkatan: "2023",
         },
       },
@@ -55,7 +59,8 @@ const data = [
         act: "Buka",
         person: {
           name: "Doe",
-          nim: "1357924680",
+          nim_tpb: "1357924680",
+          nim_jurusan: "1234567890",
           angkatan: "2023",
         },
       }
@@ -71,7 +76,8 @@ const data = [
         act: "Tutup",
         person: {
           name: "John",
-          nim: "1234567890",
+          nim_tpb: "1234567890",
+          nim_jurusan: "1234567890",
           angkatan: "2021",
         },
       },
@@ -81,7 +87,8 @@ const data = [
         act: "Buka",
         person: {
           name: "Jane",
-          nim: "0987654321",
+          nim_tpb: "0987654321",
+          nim_jurusan: "1234567890",
           angkatan: "2022",
         },
       },
@@ -91,7 +98,8 @@ const data = [
         act: "Tutup",
         person: {
           name: "Doe",
-          nim: "1357924680",
+          nim_tpb: "1357924680",
+          nim_jurusan: "1234567890",
           angkatan: "2023",
         },
       },
@@ -101,7 +109,8 @@ const data = [
         act: "Buka",
         person: {
           name: "Doe",
-          nim: "1357924680",
+          nim_tpb: "1357924680",
+          nim_jurusan: "1234567890",
           angkatan: "2023",
         },
       },
@@ -111,7 +120,8 @@ const data = [
         act: "Tutup",
         person: {
           name: "Doe",
-          nim: "1357924680",
+          nim_tpb: "1357924680",
+          nim_jurusan: "1234567890",
           angkatan: "2023",
         },
       }
@@ -228,9 +238,9 @@ export default function Home() {
         </div>
 
         <div className="flex h-[70px] p-3 bg-[#F4F4F4]">
-          <Link href={isChecked? "/j" : "/g"} className="w-full">
-            <button className="w-full bg-[#8973AE] regular custom-box-shadow hover:translate-y-1 hover:no-box-shadow">
-              <h1 className="text-[#F4F4F4] py-1 text-xl ">BUKA RUANG LATIHAN</h1>
+          <Link href="/member" className="w-full">
+            <button className={`w-full bg-[${(isChecked && data[1].status) || (!isChecked && data[0].status) ? "#DC7C7C" : "#8973AE"}] regular custom-box-shadow hover:translate-y-1 hover:no-box-shadow`}>
+              <h1 className="text-[#F4F4F4] py-1 text-xl ">{(isChecked && data[1].status) || (!isChecked && data[0].status) ? "TUTUP" : "BUKA"} RUANG LATIHAN</h1>
             </button>
           </Link>
         </div>

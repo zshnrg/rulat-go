@@ -1,6 +1,6 @@
 'use client';
 
-import { registerMember } from "@/app/services/auth";
+import { registerMember } from "@/services/auth";
 import Header from "@/components/header";
 import { Payload } from "@/lib/databasetypes";
 import { count } from "console";

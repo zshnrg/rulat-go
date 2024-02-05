@@ -6,8 +6,8 @@ import Link from "next/link";
 
 const data = [
   {
-    id: "GANESHA",
-    status: true,
+    nama_ruang_latihan: "GANESHA",
+    is_open: true,
     logs: [
       {
         date: "2021-10-10",
@@ -67,8 +67,8 @@ const data = [
     ],
   },
   {
-    id: "JATINANGOR",
-    status: false,
+    nama_ruang_latihan: "JATINANGOR",
+    is_open: false,
     logs: [
       {
         date: "2021-10-10",
@@ -186,7 +186,7 @@ export default function Home() {
         {/* Image illustration */}
         <div className="flex h-100">
           <Image
-            src={(isChecked && data[1].status) || (!isChecked && data[0].status) ? "/assets/Buka.png" : "/assets/Tutup.png"}
+            src={(isChecked && data[1].is_open) || (!isChecked && data[0].is_open) ? "/assets/Buka.png" : "/assets/Tutup.png"}
             alt="Rulat Buka Yeyy!"
             width={0}
             height={0}
@@ -206,7 +206,7 @@ export default function Home() {
         <div className="relative flex h-[70px] items-center justify-end bg-[#F4F4F4] py-4">
           <Image
           className="absolute -top-2 left-6 -rotate-6"
-            src={(isChecked && data[1].status) || (!isChecked && data[0].status) ? "/assets/Open Sign.png" : "/assets/Closed Sign.png"}
+            src={(isChecked && data[1].is_open) || (!isChecked && data[0].is_open) ? "/assets/Open Sign.png" : "/assets/Closed Sign.png"}
             alt="Header"
             width={137}
             height={38}
@@ -239,8 +239,8 @@ export default function Home() {
 
         <div className="flex h-[70px] p-3 bg-[#F4F4F4]">
           <Link href="/member" className="w-full">
-            <button className={`w-full bg-[${(isChecked && data[1].status) || (!isChecked && data[0].status) ? "#DC7C7C" : "#8973AE"}] regular custom-box-shadow hover:translate-y-1 hover:no-box-shadow`}>
-              <h1 className="text-[#F4F4F4] py-1 text-xl ">{(isChecked && data[1].status) || (!isChecked && data[0].status) ? "TUTUP" : "BUKA"} RUANG LATIHAN</h1>
+            <button className={`w-full bg-[${(isChecked && data[1].is_open) || (!isChecked && data[0].is_open) ? "#DC7C7C" : "#8973AE"}] regular custom-box-shadow hover:translate-y-1 hover:no-box-shadow`}>
+              <h1 className="text-[#F4F4F4] py-1 text-xl ">{(isChecked && data[1].is_open) || (!isChecked && data[0].is_open) ? "TUTUP" : "BUKA"} RUANG LATIHAN</h1>
             </button>
           </Link>
         </div>

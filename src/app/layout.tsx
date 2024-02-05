@@ -15,8 +15,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+<<<<<<< Updated upstream
     <html lang="en">
       <body className={inter.className}>{children}</body>
+=======
+    <html lang="en" className={silkscreen.className}>
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+      <body>{children}</body>
+>>>>>>> Stashed changes
     </html>
   );
 }

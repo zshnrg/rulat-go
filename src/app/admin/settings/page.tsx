@@ -5,9 +5,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useQRCode } from "next-qrcode";
 import html2canvas from "html2canvas";
 
+import { User } from "@/lib/databasetypes";
+import { self } from "@/services/auth";
+import { getAllRulat, updateRulatQRCode } from "@/services/rulat";
+import Toast from "@/components/toast";
+
+const domain = "http://rulat.vercel.app/open/";
+
 const data = {
-    'ganesha': 'a3bG7K9pR2uW5xY8',
-    'jatinangor': 'tL6sP2vQ8yZ4wF9'
+    'ganesha': '',
+    'jatinangor': ''
 }
 
 function generateRandomKey(length: number) {
@@ -22,13 +29,46 @@ function generateRandomKey(length: number) {
 }
 
 export default function Settigs() {
+    useEffect(() => {
+        let user: User;
+        async function getSession() {
+            const { data: { session } } = await self();
+            if (!session) {
+                console.log("Tidak ada sesi");
+                window.location.href = "/";
+                return;
+            } else {
+                console.log(session);
+                user = {
+                    id: session.user?.id,
+                    nim_tpb: session.user?.user_metadata.nim_tpb,
+                    nim_jurusan: session.user?.user_metadata.nim_jurusan,
+                    nama_lengkap: session.user?.user_metadata.nama_lengkap,
+                    nama_panggilan: session.user?.user_metadata.nama_panggilan,
+                    angkatan: session.user?.user_metadata.angkatan,
+                    created_at: session.user?.created_at,
+                };
+            }
+            if (user.nama_lengkap !== "Admin") {
+                console.log("Tidak memiliki akses");
+                window.location.href = "/";
+                return;
+            }
+        }
+        getSession();
+    }, []);
+
     const [isChecked, setIsChecked] = useState(false);
     const [labelText, setLabelText] = useState("ganesha");
-    const [divWidth, setDivWidth] = useState(null);
+    const [divWidth, setDivWidth] = useState(0);
     const [ganeshaCode, setGaneshaCode] = useState(data['ganesha']);
     const [jatinangorCode, setJatinangorCode] = useState(data['jatinangor']);
+    const [showToast, setShowToast] = useState(false)
+
+
     const divRef = useRef(null);
     const qrCodeRef = useRef(null);
+
     const { SVG } = useQRCode()
 
     const handleCheckboxChange = () => {
@@ -36,12 +76,48 @@ export default function Settigs() {
         setLabelText(isChecked ? 'ganesha' : 'jatinangor');
     };
 
+    const handleToast = () => {
+        setShowToast(false);
+    };
+
+    async function POST() {
+        console.log(`Changing QR code for ${isChecked ? "jatinangor" : "ganesha"} to ${isChecked ? jatinangorCode : ganeshaCode}`);
+        const { data, error } = await updateRulatQRCode(isChecked ? 'jatinangor' : 'ganesha', isChecked ? jatinangorCode : ganeshaCode);
+        if (error) {
+            console.error(error.message);
+            return;
+        } else {
+            console.log(data);
+            setShowToast(true);
+        }
+    }
+
+
     useEffect(() => {
         // Measure the width of the div after the component has been rendered
         if (divRef.current) {
             setDivWidth(divRef.current.offsetWidth);
         }
+
+        // getting rulat qr code
+        async function getRulat() {
+            const { data, error } = await getAllRulat();
+            if (error) {
+                console.error(error);
+                return;
+            }
+            if (data) {
+                console.log(data);
+                const ganesha_index = data.findIndex((rulat) => rulat.nama === "ganesha");
+                const jatinangor_index = data.findIndex((rulat) => rulat.nama === "jatinangor");
+                setGaneshaCode(data[ganesha_index].qr_code);
+                setJatinangorCode(data[jatinangor_index].qr_code);
+            }
+        }
+
+        getRulat();
     }, [divRef]);
+
 
     const downloadImage = async () => {
         if (qrCodeRef.current) {
@@ -60,6 +136,7 @@ export default function Settigs() {
     };
 
 
+
     return (
         <div>
             <Header line1="Dashboard" line2="Perbarui QR" />
@@ -68,7 +145,7 @@ export default function Settigs() {
                     <div ref={divRef} className="flex aspect-square w-full bg-[#F4F4F4] p-3">
                         <div ref={qrCodeRef}>
                             <SVG
-                                text={isChecked ? jatinangorCode : ganeshaCode}
+                                text={isChecked ? domain + jatinangorCode : domain + ganeshaCode}
                                 options={{
                                     margin: 2,
                                     width: divWidth - 25,
@@ -135,11 +212,14 @@ export default function Settigs() {
                             <h1 className="text-[#313131] py-1 text-xl ">Unduh</h1>
                         </button>
                     </div>
-                    <button className="w-full bg-[#8973AE] regular custom-box-shadow hover:translate-y-1 hover:no-box-shadow">
+                    <button className="w-full bg-[#8973AE] regular custom-box-shadow hover:translate-y-1 hover:no-box-shadow"
+                        onClick={POST}
+                    >
                         <h1 className="text-[#F4F4F4] py-1 text-xl ">Simpan</h1>
                     </button>
                 </div>
             </div>
+            <Toast text={`Berhasil mengubah QR ${isChecked? "Jatinangor" : "Ganesha"}`} isVisible={showToast} time={3000} onClose={handleToast} />
         </div>
     );
 }

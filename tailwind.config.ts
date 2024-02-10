@@ -25,6 +25,9 @@ const config: Config = {
         '.no-box-shadow': {
           'box-shadow': 'none',
         },
+        '.hide-password': {
+          '-webkit-text-security': 'disc',
+        },
       };
       addUtilities(newUtilities, ["responsive", "hover"]);
     }

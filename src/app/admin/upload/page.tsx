@@ -1,11 +1,13 @@
 'use client';
 
-import { registerMember } from "@/services/auth";
+import { registerMember, self } from "@/services/auth";
 import Header from "@/components/header";
 import { Payload } from "@/lib/databasetypes";
 import { count } from "console";
 import Link from "next/link";
-import React, { useState, CSSProperties } from "react";
+import React, { useState, CSSProperties, useEffect } from "react";
+
+import { User } from "@/lib/databasetypes";
 
 import {
     useCSVReader,
@@ -81,38 +83,69 @@ const styles = {
     } as CSSProperties,
 };
 
-export default function Upload() {
-    
+export default async function Upload() {
+    useEffect(() => {
+        let user: User;
+        async function getSession() {
+            const { data: { session } } = await self();
+            if (!session) {
+                console.log("Tidak ada sesi");
+                window.location.href = "/";
+                return;
+            } else {
+                console.log(session);
+                user = {
+                    id: session.user?.id,
+                    nim_tpb: session.user?.user_metadata.nim_tpb,
+                    nim_jurusan: session.user?.user_metadata.nim_jurusan,
+                    nama_lengkap: session.user?.user_metadata.nama_lengkap,
+                    nama_panggilan: session.user?.user_metadata.nama_panggilan,
+                    angkatan: session.user?.user_metadata.angkatan,
+                    created_at: session.user?.created_at,
+                };
+            }
+            if (user.nama_lengkap !== "Admin") {
+                console.log("Tidak memiliki akses");
+                window.location.href = "/";
+                return;
+            }
+        }
+        getSession();
+    }, []);
+
     const { CSVReader } = useCSVReader();
     const [zoneHover, setZoneHover] = useState(false);
     const [removeHoverColor, setRemoveHoverColor] = useState(
         DEFAULT_REMOVE_HOVER_COLOR
         );
     const [inputData, setInputData] = useState([]);
-    const [countUploaded, setCountUploaded] = useState(-1);
+    const [uploadButtonText, setUploadButtonText] = useState('Upload');
         
     async function POST() {
-        setCountUploaded(0);
+
         for (let i = 1; i < inputData.length; i++) {
-            if (inputData.length < 2 || inputData[i]?.length < 5) {
+            setUploadButtonText('Uploading...');
+            if (inputData[i]?.length < 5) {
                 alert('Data tidak valid');
                 return;
             }
             const { data, error } = await registerMember(
-                inputData[i][0],
-                inputData[i][1],
-                inputData[i][2],
-                inputData[i][3],
-                inputData[i][4]
+                inputData[i][0].toString(),
+                inputData[i][1].toString(),
+                inputData[i][2].toString(),
+                inputData[i][3].toString(),
+                inputData[i][4].toString()
             );
 
             if (error) {
-                alert('Gagal menambahkan data ke database' + error);
+                alert(`Gagal menambahkan data ke database, terdapat error pada data ${inputData[i]} ${error.message}`);
+                console.log(inputData[i]);
+                console.log(error);
+                setUploadButtonText('Failed');
                 return;
-            } else {
-                setCountUploaded(countUploaded + 1);
             }
-        }    
+        }
+        setUploadButtonText('Uploaded');
     }
 
     return (
@@ -124,6 +157,7 @@ export default function Upload() {
                         onUploadAccepted={(results: any) => {
                             setInputData(results.data);
                             console.log(results.data);
+                            setUploadButtonText('Upload');
                             setZoneHover(false);
                         }}
                         onDragOver={(event: DragEvent) => {
@@ -187,7 +221,7 @@ export default function Upload() {
                     <button className="sticky top-[80px] w-full bg-[#8973AE] regular custom-box-shadow  hover:translate-y-1 hover:no-box-shadow"
                         onClick={POST}
                     >
-                        <h1 className="text-[#F4F4F4] py-1 text-xl ">SIMPAN {countUploaded !== -1? `${countUploaded}/${inputData.length}` : ""}</h1>
+                        <h1 className="text-[#F4F4F4] py-1 text-xl ">{uploadButtonText}</h1>
                     </button>
 
                     {

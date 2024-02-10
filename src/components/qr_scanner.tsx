@@ -22,6 +22,8 @@ export default function QRScanner() {
 
             function onScanSuccess(decodedText, decodedResult) {
                 console.log(`Code matched = ${decodedText}`, decodedResult);
+                // oppening the link in current tab
+                window.open(decodedText, "_self");
                 setScanResult(decodedText);
             }
 
@@ -36,7 +38,6 @@ export default function QRScanner() {
             <div className='regular custom-box-shadow'>
                 <div id="reader"></div>
             </div>
-            <p>{scanResult}</p>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Silkscreen } from 'next/font/google'
+import { Silkscreen } from '@next/font/google'
 
 const silkscreen = Silkscreen({
   subsets: ['latin'],

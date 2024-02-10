@@ -6,13 +6,19 @@
   --foreground-header: 47, 47, 47;
   --foreground-paragraph: 75, 63, 95;
   --background-rgb: 227, 227, 227;
+
+  --toastify-color-success: #5caf5f;
+  --toastify-text-color-light: #F4F4F4;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     --foreground-rgb: 0, 0, 0;
     --background-rgb: 227, 227, 227;
-  }
+    
+    --toastify-color-success: #5caf5f;
+    --toastify-text-color-light: #F4F4F4;
+}
 }
 
 html {
@@ -35,4 +41,9 @@ body {
 
 .vl {
   border-left: 2.5px solid #4B3F5F;
+}
+
+.Toastify__toast--success {
+  background-color: var(--toastify-color-success);
+  color: var(--toastify-text-color-light);
 }

@@ -1,8 +1,11 @@
 'use client';
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+
+import { GroupedLog } from "@/lib/databasetypes";
+import { get_log } from "@/services/rulat";
 
 const data = [
   {
@@ -10,60 +13,27 @@ const data = [
     is_open: true,
     logs: [
       {
-        date: "2021-10-10",
-        time: "10:00",
+        date: "XXXX-XX-XX",
+        time: "XX:XX",
         act: "Buka",
         person: {
-          name: "John",
+          name: "XXXX",
           nim_tpb: "1234567890",
           nim_jurusan: "1234567890",
-          angkatan: "2021",
+          angkatan: "XXXX",
         },
       },
       {
-        date: "2021-10-11",
-        time: "11:00",
+        date: "XXXX-XX-XX",
+        time: "XX:XX",
         act: "Tutup",
         person: {
           name: "Satpam",
           nim_tpb: "0987654321",
           nim_jurusan: "1234567890",
-          angkatan: "2022",
+          angkatan: "XXXX",
         },
       },
-      {
-        date: "2021-10-12",
-        time: "12:00",
-        act: "Buka",
-        person: {
-          name: "Doe",
-          nim_tpb: "1357924680",
-          nim_jurusan: "1234567890",
-          angkatan: "2023",
-        },
-      },
-      {
-        date: "2021-10-13",
-        time: "13:00",
-        act: "Tutup",
-        person: {
-          name: "Doe",
-          nim_tpb: "1357924680",
-          nim_jurusan: "1234567890",
-          angkatan: "2023",
-        },
-      },
-      {
-        date: "2021-10-14",
-        time: "14:00",
-        act: "Buka",
-        person: {
-          name: "Doe",
-          nim_tpb: "1357924680",
-          nim_jurusan: "1234567890",
-          angkatan: "2023",
-        },
-      }
     ],
   },
   {
@@ -71,67 +41,34 @@ const data = [
     is_open: false,
     logs: [
       {
-        date: "2021-10-10",
-        time: "10:00",
+        date: "XXXX-XX-XX",
+        time: "XX:XX",
         act: "Tutup",
         person: {
-          name: "John",
+          name: "XXXX",
           nim_tpb: "1234567890",
           nim_jurusan: "1234567890",
-          angkatan: "2021",
+          angkatan: "XXXX",
         },
       },
       {
-        date: "2021-10-11",
-        time: "11:00",
+        date: "XXXX-XX-XX",
+        time: "XX:XX",
         act: "Buka",
         person: {
-          name: "Jane",
+          name: "XXXX",
           nim_tpb: "0987654321",
           nim_jurusan: "1234567890",
-          angkatan: "2022",
+          angkatan: "XXXX",
         },
       },
-      {
-        date: "2021-10-12",
-        time: "12:00",
-        act: "Tutup",
-        person: {
-          name: "Doe",
-          nim_tpb: "1357924680",
-          nim_jurusan: "1234567890",
-          angkatan: "2023",
-        },
-      },
-      {
-        date: "2021-10-13",
-        time: "13:00",
-        act: "Buka",
-        person: {
-          name: "Doe",
-          nim_tpb: "1357924680",
-          nim_jurusan: "1234567890",
-          angkatan: "2023",
-        },
-      },
-      {
-        date: "2021-10-14",
-        time: "14:00",
-        act: "Tutup",
-        person: {
-          name: "Doe",
-          nim_tpb: "1357924680",
-          nim_jurusan: "1234567890",
-          angkatan: "2023",
-        },
-      }
     ],
   },
 ];
 
 export default function Home() {
 
-
+  const [rulatLogs, setRulatLogs] = useState(data);
   const [isChecked, setIsChecked] = useState(false);
   const [labelText, setLabelText] = useState('GANESHA');
 
@@ -139,6 +76,62 @@ export default function Home() {
     setIsChecked(!isChecked);
     setLabelText(isChecked ? 'GANESHA' : 'JATINANGOR');
   };
+
+  useEffect(() => {
+    async function fetchRulatLogs() {
+      const { data: logData, error } = await get_log();
+      if (error) {
+        console.log(error);
+      }
+      if (logData) {
+        const reducedData = logData.reduce((acc, current) => {
+          const existingEntry = acc.find(item => item.nama_ruang_latihan === current.nama_ruang_latihan && item.is_open === current.is_open);
+          if (existingEntry) {
+            existingEntry.logs.push({
+              date: current.log_date,
+              time: current.log_time,
+              act: current.act,
+              person: {
+                name: current.name,
+                nim_tpb: current.nim_tpb,
+                nim_jurusan: current.nim_jurusan,
+                angkatan: current.angkatan
+              }
+            });
+          } else {
+            acc.push({
+              nama_ruang_latihan: current.nama_ruang_latihan,
+              is_open: current.is_open,
+              logs: [{
+                date: current.log_date,
+                time: current.log_time,
+                act: current.act,
+                person: {
+                  name: current.name,
+                  nim_tpb: current.nim_tpb,
+                  nim_jurusan: current.nim_jurusan,
+                  angkatan: current.angkatan
+                }
+              }]
+            });
+          }
+          return acc;
+        }, []);
+
+        // check the index of ganesha so its always first
+        const ganeshaIndex = reducedData.findIndex((item) => item.nama_ruang_latihan === "ganesha");
+        if (ganeshaIndex !== 0) {
+          const temp = reducedData[0];
+          reducedData[0] = reducedData[ganeshaIndex];
+          reducedData[ganeshaIndex] = temp;
+        }
+
+        setRulatLogs(reducedData);
+      }
+    }
+
+    fetchRulatLogs();
+  }, []);
 
   return (
     <div className="w-screen h-[calc(100dvh)] bg-[#4B3F5F]">
@@ -186,7 +179,7 @@ export default function Home() {
         {/* Image illustration */}
         <div className="flex h-100">
           <Image
-            src={(isChecked && data[1].is_open) || (!isChecked && data[0].is_open) ? "/assets/Buka.png" : "/assets/Tutup.png"}
+            src={(isChecked && rulatLogs[1].is_open) || (!isChecked && rulatLogs[0].is_open) ? "/assets/Buka.png" : "/assets/Tutup.png"}
             alt="Rulat Buka Yeyy!"
             width={0}
             height={0}
@@ -205,8 +198,8 @@ export default function Home() {
 
         <div className="relative flex h-[70px] items-center justify-end bg-[#F4F4F4] py-4">
           <Image
-          className="absolute -top-2 left-6 -rotate-6"
-            src={(isChecked && data[1].is_open) || (!isChecked && data[0].is_open) ? "/assets/Open Sign.png" : "/assets/Closed Sign.png"}
+            className="absolute -top-2 left-6 -rotate-6"
+            src={(isChecked && rulatLogs[1].is_open) || (!isChecked && rulatLogs[0].is_open) ? "/assets/Open Sign.png" : "/assets/Closed Sign.png"}
             alt="Header"
             width={137}
             height={38}
@@ -222,7 +215,7 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col h-full p-3 gap-3 bg-[#E3E3E3] overflow-scroll">
-          {data[isChecked ? 1 : 0].logs.map((log, index) => (
+          {rulatLogs[isChecked ? 1 : 0].logs.map((log, index) => (
             <div key={index} className="flex leading-none text-sm gap-3">
               <div className="flex flex-col w-1/3">
                 <p>{log.date}</p>
@@ -231,16 +224,16 @@ export default function Home() {
                   <p className="text-[#8973AE]">{log.time}</p>
                 </div>
               </div>
-              <div className="vl"/>
-              <p className="w-2/3">Di{log.act} oleh {log.person.name} {log.person.name != "Satpam"? `KPA${log.person.angkatan.slice(-2)}` : ""}</p>
+              <div className="vl" />
+              <p className="w-2/3">Di{log.act} oleh {log.person.name} {log.person.name != "Satpam" ? `KPA${log.person.angkatan.slice(-2)}` : ""}</p>
             </div>
           ))}
         </div>
 
         <div className="flex h-[70px] p-3 bg-[#F4F4F4]">
-          <Link href="/member" className="w-full">
-            <button className={`w-full bg-[${(isChecked && data[1].is_open) || (!isChecked && data[0].is_open) ? "#DC7C7C" : "#8973AE"}] regular custom-box-shadow hover:translate-y-1 hover:no-box-shadow`}>
-              <h1 className="text-[#F4F4F4] py-1 text-xl ">{(isChecked && data[1].is_open) || (!isChecked && data[0].is_open) ? "TUTUP" : "BUKA"} RUANG LATIHAN</h1>
+          <Link href={isChecked ? "member/j" : "member/g"} className="w-full">
+            <button className={`w-full bg-[${(isChecked && rulatLogs[1].is_open) || (!isChecked && rulatLogs[0].is_open) ? "#DC7C7C" : "#8973AE"}] regular custom-box-shadow hover:translate-y-1 hover:no-box-shadow`}>
+              <h1 className="text-[#F4F4F4] py-1 text-xl ">{(isChecked && rulatLogs[1].is_open) || (!isChecked && rulatLogs[0].is_open) ? "TUTUP" : "BUKA"} RUANG LATIHAN</h1>
             </button>
           </Link>
         </div>

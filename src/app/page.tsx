@@ -85,7 +85,7 @@ export default function Home() {
       }
       if (logData) {
         const reducedData = logData.reduce((acc, current) => {
-          const existingEntry = acc.find(item => item.nama_ruang_latihan === current.nama_ruang_latihan && item.is_open === current.is_open);
+          const existingEntry = acc.find((item: { nama_ruang_latihan: any; is_open: any; }) => item.nama_ruang_latihan === current.nama_ruang_latihan && item.is_open === current.is_open);
           if (existingEntry) {
             existingEntry.logs.push({
               date: current.log_date,
@@ -119,7 +119,7 @@ export default function Home() {
         }, []);
 
         // check the index of ganesha so its always first
-        const ganeshaIndex = reducedData.findIndex((item) => item.nama_ruang_latihan === "ganesha");
+        const ganeshaIndex = reducedData.findIndex((item: { nama_ruang_latihan: string; }) => item.nama_ruang_latihan === "ganesha");
         if (ganeshaIndex !== 0) {
           const temp = reducedData[0];
           reducedData[0] = reducedData[ganeshaIndex];

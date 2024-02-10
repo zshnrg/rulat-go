@@ -10,7 +10,7 @@ import { self } from "@/services/auth";
 import { getAllRulat, updateRulatQRCode } from "@/services/rulat";
 import Toast from "@/components/toast";
 
-const domain = "http://rulat.vercel.app/open/";
+const domain = window.location.origin + "/open/";
 
 const data = {
     'ganesha': '',
@@ -60,13 +60,11 @@ export default function Settigs() {
 
     const [isChecked, setIsChecked] = useState(false);
     const [labelText, setLabelText] = useState("ganesha");
-    const [divWidth, setDivWidth] = useState(0);
+    const [divWidth, setDivWidth] = useState(250);
     const [ganeshaCode, setGaneshaCode] = useState(data['ganesha']);
     const [jatinangorCode, setJatinangorCode] = useState(data['jatinangor']);
     const [showToast, setShowToast] = useState(false)
 
-
-    const divRef = useRef(null);
     const qrCodeRef = useRef(null);
 
     const { SVG } = useQRCode()
@@ -94,10 +92,6 @@ export default function Settigs() {
 
 
     useEffect(() => {
-        // Measure the width of the div after the component has been rendered
-        if (divRef.current) {
-            setDivWidth(divRef.current.offsetWidth);
-        }
 
         // getting rulat qr code
         async function getRulat() {
@@ -116,14 +110,14 @@ export default function Settigs() {
         }
 
         getRulat();
-    }, [divRef]);
+    }, []);
 
 
     const downloadImage = async () => {
         if (qrCodeRef.current) {
             await setDivWidth(1000);
             const canvas = await html2canvas(qrCodeRef.current);
-            await setDivWidth(divRef.current.offsetWidth);
+            await setDivWidth(250);
             const dataUrl = canvas.toDataURL();
             
             const downloadLink = document.createElement('a');
@@ -142,13 +136,13 @@ export default function Settigs() {
             <Header line1="Dashboard" line2="Perbarui QR" />
             <div className="pt-[70px]">
                 <div className="flex flex-col p-3 gap-3 items-center">
-                    <div ref={divRef} className="flex aspect-square w-full bg-[#F4F4F4] p-3">
+                    <div className="flex aspect-square w-fit bg-[#F4F4F4] p-3">
                         <div ref={qrCodeRef}>
                             <SVG
                                 text={isChecked ? domain + jatinangorCode : domain + ganeshaCode}
                                 options={{
                                     margin: 2,
-                                    width: divWidth - 25,
+                                    width: divWidth,
                                     color: {
                                         dark: '#000000',
                                         light: '#F4F4F4',

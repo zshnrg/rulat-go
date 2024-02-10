@@ -1,13 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
-import { error } from 'console';
+import { redirect } from 'next/navigation';
 
-export default function QRScanner() {
-    const [scanResult, setScanResult] = useState(null);
+interface QRScannerProps {
+    onSuccessfulScan: (decodedText: string, decodedResult: any) => void;
+}
 
-    let html5QrCode;
+export default function QRScanner({ onSuccessfulScan }: QRScannerProps) {
+    let html5QrCode: any;
 
     useEffect(() => {
         if (!html5QrCode?.getState()) {
@@ -17,19 +19,26 @@ export default function QRScanner() {
                 "reader"
             );
             
+            const onScanSuccess = function(decodedText: string, decodedResult: any) {
+                console.log(`Code matched = ${decodedText}`, decodedResult);
+                
+                // Stop the scanner to avoid multiple decode
+                html5QrCode.stop().then(() => {
+                    // QR Code found
+                    console.log("QR Code found");
+                }).catch((err: any) => {
+                    console.error("Failed to stop the scanner", err);
+                });
+
+                onSuccessfulScan(decodedText, decodedResult);
+            }
+
+            const onScanFailure = (error: any) => {
+                console.warn(`Code scan error = ${error}`);
+            }
 
             html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, onScanFailure);
 
-            function onScanSuccess(decodedText, decodedResult) {
-                console.log(`Code matched = ${decodedText}`, decodedResult);
-                // oppening the link in current tab
-                window.open(decodedText, "_self");
-                setScanResult(decodedText);
-            }
-
-            function onScanFailure(error) {
-                console.warn(`Code scan error = ${error}`);
-            }
         }
     }, []);
 

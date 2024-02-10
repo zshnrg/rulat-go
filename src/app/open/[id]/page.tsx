@@ -21,23 +21,20 @@ export default function Open({ params }: { params: { id: string } }) {
             console.error(error);
             return;
         }
-        if (data) {
-            console.log("Rulat", data[0]);
-
-            if (data.length === 0) {
-                setText('Rulat tidak ditemukan');
-                // wait for 3 seconds before redirecting to the home page
-                setTimeout(() => {
-                    window.location.href = "/";
-                }, 3000);
-                return;
-            } else {
-                rulat = data[0];
-                setText(`${rulat.is_open ? "Menutup" : "Membuka"} rulat ${rulat.nama}...`);
-
-                console.log("Data:", rulat);
-            }
+        if (!data || data.length === 0) {
+            setText('Rulat tidak ditemukan');
+            setText('Rulat tidak ditemukan');
+            // wait for 3 seconds before redirecting to the home page
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 3000);
+            return;
         }
+        rulat = data[0];
+        setText(`${rulat.is_open ? "Menutup" : "Membuka"} rulat ${rulat.nama}...`);
+
+        console.log("Data:", rulat);
+
 
         const { data: { session } } = await self();
         if (!session) {

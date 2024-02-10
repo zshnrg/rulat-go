@@ -113,7 +113,7 @@ export default function Data() {
                                 filterData();
                             }}
                         >
-                            <img src="/icons/proceed.svg" alt="search" />
+                            <img src="/icons/Proceed.svg" alt="search" />
                         </button>
                     </form>
 

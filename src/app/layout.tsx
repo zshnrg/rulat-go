@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={silkscreen.className}>
-      <link rel="icon" href="/favicon.ico" sizes="any" />
+      <link rel="icon" href="/assets/favicon.ico" sizes="any" />
       <body>{children}</body>
     </html>
   );

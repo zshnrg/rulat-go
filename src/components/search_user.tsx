@@ -92,7 +92,7 @@ export function SearchUser({ kampus, onSuccess }: Kampus) {
                                 searchUser();
                             }}
                         >
-                            <img src="/icons/proceed.svg" alt="search" />
+                            <img src="/icons/Proceed.svg" alt="search" />
                         </button>
                     </form>
                     <div className={`flex flex-col bg-[#F4F4F4] dashed custom-box-shadow justify-center items-center p-4 ${isButtonPressed ? "hidden" : ""}`}>

@@ -118,7 +118,7 @@ export default async function Upload() {
     const [removeHoverColor, setRemoveHoverColor] = useState(
         DEFAULT_REMOVE_HOVER_COLOR
         );
-    const [inputData, setInputData] = useState([]);
+    const [inputData, setInputData] = useState<any[]>([]);
     const [uploadButtonText, setUploadButtonText] = useState('Upload');
         
     async function POST() {

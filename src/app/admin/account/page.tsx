@@ -5,16 +5,18 @@ import Toast from "@/components/toast";
 import { updatePassword, self } from "@/services/auth";
 import { useState, useEffect } from "react"
 import { User } from "@/lib/databasetypes";
+import { useRouter } from "next/navigation";
 
 
 export default function Account() {
+    const router = useRouter();
     useEffect(() => {
         let user: User;
         async function getSession() {
             const { data: { session } } = await self();
             if (!session) {
                 console.log("Tidak ada sesi");
-                window.location.href = "/";
+                router.push("/");
                 return;
             } else {
                 console.log(session);
@@ -30,7 +32,7 @@ export default function Account() {
             }
             if (user.nama_lengkap !== "Admin") {
                 console.log("Tidak memiliki akses");
-                window.location.href = "/";
+                router.push("/");
                 return;
             }
         }

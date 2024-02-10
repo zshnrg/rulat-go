@@ -5,9 +5,11 @@ import { self } from "@/services/auth";
 import { getRulatStatus, updateRulatStatus, new_log } from "@/services/rulat";
 import { SearchUser } from "@/components/search_user";
 import { User, Rulat } from "@/lib/databasetypes";
+import { useRouter } from "next/navigation";
 
 
 export default function Open({ params }: { params: { id: string } }) {
+    const router = useRouter();
     const [text, setText] = useState('Mengakses...');
 
     async function getRulat() {
@@ -26,7 +28,7 @@ export default function Open({ params }: { params: { id: string } }) {
             setText('Rulat tidak ditemukan');
             // wait for 3 seconds before redirecting to the home page
             setTimeout(() => {
-                window.location.href = "/";
+                router.push("/");
             }, 3000);
             return;
         }
@@ -39,7 +41,7 @@ export default function Open({ params }: { params: { id: string } }) {
         const { data: { session } } = await self();
         if (!session) {
             console.log("Tidak ada sesi");
-            window.location.href = "/member/" + rulat.nama.charAt(0).toLowerCase();
+            router.push("/member/" + rulat.nama.charAt(0).toLowerCase()); 
             return;
         } else {
             console.log(session);
@@ -71,7 +73,7 @@ export default function Open({ params }: { params: { id: string } }) {
                 setText(`Rulat ${rulat.nama} berhasil ${rulat.is_open ? "ditutup" : "dibuka"}`);
                 // wait for 3 seconds before redirecting to the home page
                 setTimeout(() => {
-                    window.location.href = "/";
+                    router.push("/");
                 }, 3000);
             }
         }

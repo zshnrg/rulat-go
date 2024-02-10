@@ -4,13 +4,14 @@ import Header from "@/components/header";
 import React, { useEffect, useRef, useState } from 'react';
 import { useQRCode } from "next-qrcode";
 import html2canvas from "html2canvas";
+import { useRouter } from "next/navigation";
 
 import { User } from "@/lib/databasetypes";
 import { self } from "@/services/auth";
 import { getAllRulat, updateRulatQRCode } from "@/services/rulat";
 import Toast from "@/components/toast";
 
-const domain = window.location.origin + "/open/";
+const domain = "https://rulat.vercel.app" + "/open/";
 
 const data = {
     'ganesha': '',
@@ -29,13 +30,15 @@ function generateRandomKey(length: number) {
 }
 
 export default function Settigs() {
+    const router = useRouter();
+
     useEffect(() => {
         let user: User;
         async function getSession() {
             const { data: { session } } = await self();
             if (!session) {
                 console.log("Tidak ada sesi");
-                window.location.href = "/";
+                router.push("/");
                 return;
             } else {
                 console.log(session);
@@ -51,7 +54,7 @@ export default function Settigs() {
             }
             if (user.nama_lengkap !== "Admin") {
                 console.log("Tidak memiliki akses");
-                window.location.href = "/";
+                router.push("/");
                 return;
             }
         }

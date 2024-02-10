@@ -6,6 +6,7 @@ import { Payload } from "@/lib/databasetypes";
 import { count } from "console";
 import Link from "next/link";
 import React, { useState, CSSProperties, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import { User } from "@/lib/databasetypes";
 
@@ -84,13 +85,15 @@ const styles = {
 };
 
 export default async function Upload() {
+    const router = useRouter();
+
     useEffect(() => {
         let user: User;
         async function getSession() {
             const { data: { session } } = await self();
             if (!session) {
                 console.log("Tidak ada sesi");
-                window.location.href = "/";
+                router.push("/");
                 return;
             } else {
                 console.log(session);
@@ -106,7 +109,7 @@ export default async function Upload() {
             }
             if (user.nama_lengkap !== "Admin") {
                 console.log("Tidak memiliki akses");
-                window.location.href = "/";
+                router.push("/");
                 return;
             }
         }

@@ -5,15 +5,18 @@ import { User } from "@/lib/databasetypes";
 import { signOut, self } from "@/services/auth";
 import Link from "next/link";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Admin() {
+    const router = useRouter();
+
     useEffect(() => {
         let user: User;
         async function getSession() {
             const { data: { session } } = await self();
             if (!session) {
                 console.log("Tidak ada sesi");
-                window.location.href = "/";
+                router.push("/");
                 return;
             } else {
                 console.log(session);
@@ -29,7 +32,7 @@ export default function Admin() {
             }
             if (user.nama_lengkap !== "Admin") {
                 console.log("Tidak memiliki akses");
-                window.location.href = "/";
+                router.push("/");
                 return;
             }
         }
@@ -41,7 +44,9 @@ export default function Admin() {
         if (error) {
             console.log(error.message);
         }
-        window.location.href = "/";
+        else {
+            router.push('/');
+        }
     }
 
     return (

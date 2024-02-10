@@ -2,10 +2,13 @@
 
 import Header from "@/components/header";
 import { signOut, self } from "@/services/auth";
+
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function About() {
     const [session, setSession] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         async function GET() {
@@ -22,7 +25,9 @@ export default function About() {
         if (error) {
             console.log(error.message);
         }
-        window.location.href = "/";
+        else {
+            router.push('/');
+        }
     }
 
     return (

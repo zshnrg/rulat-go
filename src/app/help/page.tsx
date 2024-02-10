@@ -1,10 +1,13 @@
 'use client';
 
 import Header from "@/components/header";
+import { useRouter } from "next/navigation";
 
 export default function Help() {
+    const router = useRouter();
+
     const openWhatsApp = () => {
-        window.open('https://wa.me/', '_blank');
+        router.push("https://wa.me/");
     };
 
     return (

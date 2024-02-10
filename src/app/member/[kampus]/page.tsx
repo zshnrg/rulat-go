@@ -3,30 +3,30 @@
 import { useEffect } from "react";
 import { self } from "@/services/auth";
 import { SearchUser } from "@/components/search_user";
+import { useRouter } from "next/navigation";
 
 export default function Member({params}: {params: {kampus: string}}) {
+    const router = useRouter();
 
-    useEffect(() => {
-
-        async function getSession() {
-            const { data: { session } } = await self();
-            if (session) {
-                console.log(session);
-                if (session.user?.user_metadata?.nama_lengkap === "Admin") {
-                    window.location.href = "/admin";
-                } else {
-                    window.location.href = "/scan";
-                }
+    async function getSession() {
+        const { data: { session } } = await self();
+        if (session) {
+            console.log(session);
+            if (session.user?.user_metadata?.nama_lengkap === "Admin") {
+                router.push("/admin");
+            } else {
+                router.push("/scan");
             }
         }
+    }
 
+    useEffect(() => {
         getSession();
 
     }, []);
 
     function onSuccessRedirect() {
-        // reload the page
-        window.location.href = "/member/" + params.kampus;
+        getSession();
     }
 
     return (

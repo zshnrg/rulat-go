@@ -1,0 +1,15 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icons/Lock Open" clip-path="url(#clip0_38_2597)">
+<g id="Union">
+<path d="M11.2941 14.1176H14.1176V19.7647H11.2941V14.1176Z" fill="black" fill-opacity="0.8"/>
+<path d="M7.05882 12.7059H5.64706V21.1765H8.47059V19.7647H7.05882V12.7059Z" fill="black" fill-opacity="0.8"/>
+<path d="M19.7647 12.7059H16.9412V14.1176H18.3529V21.1765H19.7647V12.7059Z" fill="black" fill-opacity="0.8"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.47059 0V1.41176H5.64706V2.82353H4.23529V4.23529H2.82353V9.88235H1.41176V11.2941H0V22.5882H1.41176V24H22.5882V22.5882H24V11.2941H22.5882V9.88235H5.64706V4.23529H9.88235V2.82353H16.9412V4.23529H18.3529V8.47059H19.7647V7.05882H21.1765V2.82353H19.7647V1.41176H18.3529V0H8.47059ZM22.5882 11.2941H2.82353V22.5882H22.5882V11.2941Z" fill="black" fill-opacity="0.8"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_38_2597">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

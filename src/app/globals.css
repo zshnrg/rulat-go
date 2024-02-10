@@ -3,31 +3,47 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-header: 47, 47, 47;
+  --foreground-paragraph: 75, 63, 95;
+  --background-rgb: 227, 227, 227;
+
+  --toastify-color-success: #5caf5f;
+  --toastify-text-color-light: #F4F4F4;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+    --foreground-rgb: 0, 0, 0;
+    --background-rgb: 227, 227, 227;
+    
+    --toastify-color-success: #5caf5f;
+    --toastify-text-color-light: #F4F4F4;
+}
+}
+
+html {
+  background-color: rgb(var(--background-rgb));
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: rgb(var(--foreground-header));
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: rgb(var(--foreground-paragraph));
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.vl {
+  border-left: 2.5px solid #4B3F5F;
+}
+
+.Toastify__toast--success {
+  background-color: var(--toastify-color-success);
+  color: var(--toastify-text-color-light);
 }

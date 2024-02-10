@@ -1,0 +1,16 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icons/Lock Closed" clip-path="url(#clip0_38_2598)">
+<g id="Union">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.64706 0H18.3529V1.41176H19.7647V2.82353H21.1765V9.88235H22.5882V11.2941H2.82353V22.5882H22.5882V24H1.41176V22.5882H0V11.2941H1.41176V9.88235H2.82353V2.82353H4.23529V1.41176H5.64706V0ZM18.3529 9.88235H5.64706V2.82353H18.3529V9.88235Z" fill="black" fill-opacity="0.8"/>
+<path d="M22.5882 11.2941H24V22.5882H22.5882V11.2941Z" fill="black" fill-opacity="0.8"/>
+<path d="M11.2941 14.1176V19.7647H14.1176V14.1176H11.2941Z" fill="black" fill-opacity="0.8"/>
+<path d="M4.23529 12.7059H5.64706V19.7647H7.05882V21.1765H4.23529V12.7059Z" fill="black" fill-opacity="0.8"/>
+<path d="M21.1765 12.7059V21.1765H19.7647V14.1176H18.3529V12.7059H21.1765Z" fill="black" fill-opacity="0.8"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_38_2598">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

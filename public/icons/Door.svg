@@ -1,0 +1,16 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icons/Door" clip-path="url(#clip0_38_2599)">
+<g id="Union" opacity="0.8">
+<path d="M2.82353 1.41176V0H21.1765V1.41176H16.9412V2.82353H15.5294V1.41176H4.23529L4.23529 21.1765H16.9412V2.82353H18.3529V21.1765H21.1765V1.41176H22.5882V22.5882H24V24H0V22.5882H1.41176L1.41176 1.41176H2.82353Z" fill="black"/>
+<path d="M5.64706 2.82353V9.88235H9.88235V2.82353H5.64706Z" fill="black"/>
+<path d="M5.64706 12.7059H9.88235V19.7647H5.64706V12.7059Z" fill="black"/>
+<path d="M11.2941 2.82353V9.88235H15.5294V4.23529H14.1176V2.82353H11.2941Z" fill="black"/>
+<path d="M11.2941 12.7059H15.5294V19.7647H11.2941V12.7059Z" fill="black"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_38_2599">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

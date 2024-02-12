@@ -4,7 +4,7 @@ import Header from "@/components/header";
 import QRScanner from "@/components/qr_scanner";
 import { redirect } from "next/navigation";
 
-export default function Open() {
+export default function Open({params}: {params: {kampus: string}}) {
 
     function onSuccessfulScan(decodedText: string, decodedResult: any) {
         console.log("QR Code found");
@@ -15,7 +15,7 @@ export default function Open() {
 
     return (
         <div>
-            <Header line1="MEMBUKA RULAT" line2="KAMPUS GANESHA" />
+            <Header line1="MEMBUKA RULAT" line2={params.kampus === "g"? "KAMPUS GANESHA" : "KAMPUS JATINANGOR"} />
             <div className="pt-[70px]">
                 <div className="flex flex-col p-3 gap-3">
                     <QRScanner onSuccessfulScan={onSuccessfulScan}/>   

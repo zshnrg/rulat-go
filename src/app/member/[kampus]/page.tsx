@@ -14,7 +14,7 @@ export default function Member({params}: {params: {kampus: string}}) {
             if (session.user?.user_metadata?.nama_lengkap === "Admin") {
                 router.push("/admin");
             } else {
-                router.push("/scan");
+                router.push("/scan/" + params.kampus.charAt(0).toLowerCase());
             }
         }
     }

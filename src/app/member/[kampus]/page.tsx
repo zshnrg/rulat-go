@@ -11,7 +11,6 @@ export default function Member({params}: {params: {kampus: string}}) {
     async function getSession() {
         const { data: { session } } = await self();
         if (session) {
-            console.log(session);
             if (session.user?.user_metadata?.nama_lengkap === "Admin") {
                 router.push("/admin");
             } else {

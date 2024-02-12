@@ -20,7 +20,6 @@ export default function Data() {
                 router.push("/");
                 return;
             } else {
-                console.log(session);
                 user = {
                     id: session.user?.id,
                     nim_tpb: session.user?.user_metadata.nim_tpb,
@@ -63,7 +62,6 @@ export default function Data() {
                 console.log(error);
                 
             } else {
-                console.log(data);
                 setUserFilter(userFilter.filter((_, i) => i !== index));
                 // search for the index of the user in userData
                 const userIndex = userData.findIndex((user) => user.id === id);
@@ -84,10 +82,11 @@ export default function Data() {
                 if (error) {
                     console.log(error);
                 } else {
-                    console.log("--------------------------------------------");
-                    console.log(data);
-                    setUserData(data!);
-                    setUserFilter(data!);
+                    // filtering the data to remove the admin with nim 00000000 and 99999999
+                    let filteredData = data?.filter((user) => user.nim_tpb !== "00000000" && user.nim_tpb !== "99999999");
+
+                    setUserData(filteredData!);
+                    setUserFilter(filteredData!);
                 }
             }
         }

@@ -84,7 +84,7 @@ const styles = {
     } as CSSProperties,
 };
 
-export default async function Upload() {
+export default function Upload() {
     const router = useRouter();
 
     useEffect(() => {
@@ -96,7 +96,6 @@ export default async function Upload() {
                 router.push("/");
                 return;
             } else {
-                console.log(session);
                 user = {
                     id: session.user?.id,
                     nim_tpb: session.user?.user_metadata.nim_tpb,

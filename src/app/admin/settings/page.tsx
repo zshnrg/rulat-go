@@ -41,7 +41,6 @@ export default function Settigs() {
                 router.push("/");
                 return;
             } else {
-                console.log(session);
                 user = {
                     id: session.user?.id,
                     nim_tpb: session.user?.user_metadata.nim_tpb,
@@ -88,7 +87,6 @@ export default function Settigs() {
             console.error(error.message);
             return;
         } else {
-            console.log(data);
             setShowToast(true);
         }
     }
@@ -104,7 +102,6 @@ export default function Settigs() {
                 return;
             }
             if (data) {
-                console.log(data);
                 const ganesha_index = data.findIndex((rulat) => rulat.nama === "ganesha");
                 const jatinangor_index = data.findIndex((rulat) => rulat.nama === "jatinangor");
                 setGaneshaCode(data[ganesha_index].qr_code);

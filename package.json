@@ -18,7 +18,8 @@
     "next-qrcode": "^2.5.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-papaparse": "^4.4.0"
+    "react-papaparse": "^4.4.0",
+    "react-range": "^1.8.14"
   },
   "devDependencies": {
     "@types/node": "^20",

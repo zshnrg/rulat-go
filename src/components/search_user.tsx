@@ -32,7 +32,6 @@ export function SearchUser({ kampus, onSuccess }: Kampus) {
                 console.error(error);
             }
             if (data) {
-                console.log(data);
                 setUserData(data[0]);
                 setDataLength(data.length);
             }
@@ -56,7 +55,6 @@ export function SearchUser({ kampus, onSuccess }: Kampus) {
             return;
         }
         if (data) {
-            console.log(data);
             // Redirect to the next page
             onSuccess && onSuccess();
         }
@@ -69,7 +67,6 @@ export function SearchUser({ kampus, onSuccess }: Kampus) {
     const handleSubmit = (e: any) => {
         e.preventDefault();
         // Lakukan logika pengiriman formulir atau validasi di sini
-        console.log('Password submitted:', password);
         POST(userData?.nim_tpb + "@mail.com", password);
     };
 

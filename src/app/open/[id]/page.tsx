@@ -6,11 +6,16 @@ import { getRulatStatus, updateRulatStatus, new_log } from "@/services/rulat";
 import { SearchUser } from "@/components/search_user";
 import { User, Rulat } from "@/lib/databasetypes";
 import { useRouter } from "next/navigation";
+import Slider from "@/components/slide_to_proceed";
 
 
 export default function Open({ params }: { params: { id: string } }) {
     const router = useRouter();
     const [text, setText] = useState('Mengakses...');
+    const [dataUser, setUser] = useState<User | null>(null);
+    const [dataRulat, setRulat] = useState<Rulat | null>(null);
+    const [showSlider, setShowSlider] = useState(false);
+    const [sliderValue, setSliderValue] = useState(0);
 
     async function getRulat() {
         let rulat: Rulat;
@@ -33,18 +38,15 @@ export default function Open({ params }: { params: { id: string } }) {
             return;
         }
         rulat = data[0];
+        setRulat(rulat);
         setText(`${rulat.is_open ? "Menutup" : "Membuka"} rulat ${rulat.nama}...`);
-
-        console.log("Data:", rulat);
-
 
         const { data: { session } } = await self();
         if (!session) {
             console.log("Tidak ada sesi");
-            router.push("/member/" + rulat.nama.charAt(0).toLowerCase()); 
+            router.push("/member/" + rulat.nama.charAt(0).toLowerCase());
             return;
         } else {
-            console.log(session);
             user = {
                 id: session.user?.id,
                 nim_tpb: session.user?.user_metadata.nim_tpb,
@@ -54,6 +56,13 @@ export default function Open({ params }: { params: { id: string } }) {
                 angkatan: session.user?.user_metadata.angkatan,
                 created_at: session.user?.created_at,
             };
+            setUser(user);
+        }
+
+        if (rulat.is_open) {
+            setShowSlider(true);
+            setText("Kamu akan menutup rulat!");
+            return;
         }
 
         console.log("Mengubah status...");
@@ -64,12 +73,10 @@ export default function Open({ params }: { params: { id: string } }) {
             console.log("Status berhasil diubah");
             console.log(updateData);
             console.log("Mencatat log...");
-            console.log("Data: " + user.id + " " + rulat.id + " " + (rulat.is_open ? "Tutup" : "Buka"));
             const { data: logData, error: logError } = await new_log(user.id, rulat.id, rulat.is_open ? "Tutup" : "Buka");
             if (logError) {
                 console.error(logError);
             } else {
-                console.log(logData);
                 setText(`Rulat ${rulat.nama} berhasil ${rulat.is_open ? "ditutup" : "dibuka"}`);
                 // wait for 3 seconds before redirecting to the home page
                 setTimeout(() => {
@@ -79,14 +86,50 @@ export default function Open({ params }: { params: { id: string } }) {
         }
     }
 
+    const handleSliderChange = (value: any) => {
+
+        async function updateRulat() {
+            if (dataUser && dataRulat) {
+                const { data: updateData, error: updateError } = await updateRulatStatus(dataRulat.id, !dataRulat.is_open);
+                if (updateError) {
+                    console.error(updateError);
+                } else {
+                    console.log("Status berhasil diubah");
+                    console.log(updateData);
+                    console.log("Mencatat log...");
+                    const { data: logData, error: logError } = await new_log(dataUser.id, dataRulat.id, dataRulat.is_open ? "Tutup" : "Buka");
+                    if (logError) {
+                        console.error(logError);
+                    } else {
+                        setText(`Rulat ${dataRulat.nama} berhasil ${dataRulat.is_open ? "ditutup" : "dibuka"}`);
+                        // wait for 3 seconds before redirecting to the home page
+                        setTimeout(() => {
+                            router.push("/");
+                        }, 3000);
+                    }
+                }
+            }
+        }
+
+        setSliderValue(value);
+        if (value === 100) {
+            setShowSlider(false);
+            setText("Mengubah status...");
+            updateRulat();
+        }
+    };
+
     useEffect(() => {
         getRulat();
     }, []);
 
     return (
         <div>
-            <div className="flex w-screen h-screen items-center justify-center">
-                <h1>{text}</h1>
+            <div className="flex flex-col w-screen h-screen items-center justify-center text-center">
+                <h1 className="px-4">{text}</h1>
+                {showSlider && <div className="flex w-screen items-center justify-center">
+                    <Slider onValueChange={handleSliderChange} />
+                </div>}
             </div>
         </div>
     );

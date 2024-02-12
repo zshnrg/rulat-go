@@ -19,7 +19,6 @@ export default function Account() {
                 router.push("/");
                 return;
             } else {
-                console.log(session);
                 user = {
                     id: session.user?.id,
                     nim_tpb: session.user?.user_metadata.nim_tpb,

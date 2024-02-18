@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import { self } from "@/services/auth";
 import { getRulatStatus, updateRulatStatus, new_log } from "@/services/rulat";
-import { SearchUser } from "@/components/search_user";
 import { User, Rulat } from "@/lib/databasetypes";
 import { useRouter } from "next/navigation";
 import Slider from "@/components/slide_to_proceed";
+import Link from "next/link";
 
 
 export default function Open({ params }: { params: { id: string } }) {
@@ -60,30 +60,13 @@ export default function Open({ params }: { params: { id: string } }) {
         }
 
         if (rulat.is_open) {
-            setShowSlider(true);
             setText("Kamu akan menutup rulat!");
-            return;
+        } else {
+            setText("Kamu akan membuka rulat!");
         }
 
-        console.log("Mengubah status...");
-        const { data: updateData, error: updateError } = await updateRulatStatus(rulat.id, !rulat.is_open);
-        if (updateError) {
-            console.error(updateError);
-        } else {
-            console.log("Status berhasil diubah");
-            console.log(updateData);
-            console.log("Mencatat log...");
-            const { data: logData, error: logError } = await new_log(user.id, rulat.id, rulat.is_open ? "Tutup" : "Buka");
-            if (logError) {
-                console.error(logError);
-            } else {
-                setText(`Rulat ${rulat.nama} berhasil ${rulat.is_open ? "ditutup" : "dibuka"}`);
-                // wait for 3 seconds before redirecting to the home page
-                setTimeout(() => {
-                    router.push("/");
-                }, 3000);
-            }
-        }
+        setShowSlider(true);
+        return;
     }
 
     const handleSliderChange = (value: any) => {
@@ -127,9 +110,17 @@ export default function Open({ params }: { params: { id: string } }) {
         <div>
             <div className="flex flex-col w-screen h-screen items-center justify-center text-center">
                 <h1 className="px-4">{text}</h1>
-                {showSlider && <div className="flex w-screen items-center justify-center">
-                    <Slider onValueChange={handleSliderChange} />
-                </div>}
+                {showSlider && <>
+                    <div className="flex w-screen items-center justify-center">
+                        <Slider onValueChange={handleSliderChange} color={dataRulat?.is_open? "#DC7C7C" : "#8973AE"} />
+                    </div>
+                    <Link href="/" className="w-fit pt-4">
+                        <button className={`w-fit bg-[#DC7C7C] regular custom-box-shadow hover:translate-y-1 hover:no-box-shadow`}>
+                            <h1 className="text-[#F4F4F4] py-1 px-4 text-xl ">Kembali</h1>
+                        </button>
+                    </Link>
+                </>
+                }
             </div>
         </div>
     );

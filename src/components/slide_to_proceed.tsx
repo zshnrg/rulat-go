@@ -1,9 +1,11 @@
+import { color } from 'html2canvas/dist/types/css/types/color';
 import { get } from 'http';
 import * as React from 'react';
 import { Range, getTrackBackground } from 'react-range';
 
 interface SliderProps {
   onValueChange: (value: number) => void;
+  color: string;
 }
 
 export default class Slider extends React.Component<SliderProps> {
@@ -22,8 +24,8 @@ export default class Slider extends React.Component<SliderProps> {
       <>
         <div className='flex flex-col w-full text-center px-8 gap-4'>
           <h3>Slide untuk melanjutkan</h3>
-          <div className='regular'>
-            <div className='px-5 bg-gradient-to-r from-[#DC7C7C] from-10% to-[#ccc] to-90%'>
+          <div className='regular bg-[#ccc]'>
+            <div className={`bg-[${this.props.color}] mr-5`}>
               <Range
                 min={0}
                 max={100}
@@ -35,10 +37,10 @@ export default class Slider extends React.Component<SliderProps> {
                     style={{
                       ...props.style,
                       height: '42px',
-                      width: '100%',
+                      marginLeft: '21px',
                       background: getTrackBackground({
                         values: this.state.values,
-                        colors: ["#DC7C7C", "#ccc"],
+                        colors: [this.props.color, "#ccc"],
                         min: 0,
                         max: 100
                       }),
